@@ -2,9 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/Virtual-Fitting-Room.iml" filepath="$PROJECT_DIR$/Virtual-Fitting-Room.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/virtualFitting.iml" filepath="$PROJECT_DIR$/.idea/virtualFitting.iml" />
-      <module fileurl="file://$PROJECT_DIR$/virtualFittingRoom.iml" filepath="$PROJECT_DIR$/virtualFittingRoom.iml" />
     </modules>
   </component>
 </project>
