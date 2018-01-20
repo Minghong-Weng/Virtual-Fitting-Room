@@ -13,7 +13,7 @@ public class ResultActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_result);
 
-        byte[] byteArray = getIntent().getExtras().getByteArray("result");
+        byte[] byteArray = getIntent().getExtras().getByteArray("imageResult");
         Bitmap bmp = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
         ImageView image = (ImageView) findViewById(R.id.resultImage);
 
