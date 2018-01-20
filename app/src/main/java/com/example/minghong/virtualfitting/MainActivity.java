@@ -284,5 +284,17 @@ public class MainActivity extends AppCompatActivity
 
     }
 
+    public void submit(View view){
+        //convert bitmap to byte array
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        selfie.compress(Bitmap.CompressFormat.PNG, 100, stream);
+        byte[] byteArray = stream.toByteArray();
+
+        //pass byte array into intent
+        Intent intent = new Intent(this, DisplayResultActivity.class);
+        intent.putExtra("result", byteArray);
+        startActivity(intent);
+    }
+
 
 }
