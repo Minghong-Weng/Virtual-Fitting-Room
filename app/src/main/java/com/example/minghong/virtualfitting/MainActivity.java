@@ -291,7 +291,7 @@ public class MainActivity extends AppCompatActivity
         byte[] byteArray = stream.toByteArray();
 
         //pass byte array into intent
-        Intent intent = new Intent(this, DisplayResultActivity.class);
+        Intent intent = new Intent(this, ResultActivity.class);
         intent.putExtra("result", byteArray);
         startActivity(intent);
     }
