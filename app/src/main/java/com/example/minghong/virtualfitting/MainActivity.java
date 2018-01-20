@@ -39,11 +39,12 @@ public class MainActivity extends AppCompatActivity
     private int REQUEST_CAMERA = 0, SELECT_FILE = 1;
     private Button btnSelect;
     private ImageView ivImage;
-    //private Button btnItem;
-    //private ImageView ivItem;
+    private Button btnItem;
+    private ImageView ivItem;
     private String userChoosenTask;
     Bitmap selfie = null;
-    //Bitmap item = null;
+    Bitmap item = null;
+    private boolean setSelfie = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,14 +71,14 @@ public class MainActivity extends AppCompatActivity
         });
         ivImage = (ImageView) findViewById(R.id.ivImage);
 
-        /*btnItem = (Button) findViewById(R.id.btnSelectItem);
+        btnItem = (Button) findViewById(R.id.btnSelectItem);
         btnItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 selectItem();
             }
         });
-        ivItem = (ImageView) findViewById(R.id.itemImage);*/
+        ivItem = (ImageView) findViewById(R.id.ivItem);
 
     }
 
@@ -155,6 +156,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void selectImage() {
+        setSelfie = true;
         final CharSequence[] items = { "Take Photo", "Choose from Library",
                 "Cancel" };
 
@@ -184,7 +186,8 @@ public class MainActivity extends AppCompatActivity
         builder.show();
     }
 
-   /* private void selectItem() {
+   private void selectItem() {
+        setSelfie = false;
         final CharSequence[] items = {"Choose from Library",
                 "Cancel" };
 
@@ -206,7 +209,7 @@ public class MainActivity extends AppCompatActivity
             }
         });
         builder.show();
-    }*/
+    }
 
     private void galleryIntent()
     {
@@ -259,17 +262,26 @@ public class MainActivity extends AppCompatActivity
 
     @SuppressWarnings("deprecation")
     private void onSelectFromGalleryResult(Intent data) {
-
+        Bitmap image = null;
 
         if (data != null) {
             try {
-                selfie = MediaStore.Images.Media.getBitmap(getApplicationContext().getContentResolver(), data.getData());
+                image = MediaStore.Images.Media.getBitmap(getApplicationContext().getContentResolver(), data.getData());
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
 
-        ivImage.setImageBitmap(selfie);
+
+        if (setSelfie) {
+            ivImage.setImageBitmap(image);
+            selfie = image;
+        }
+        else {
+            ivItem.setImageBitmap(image);
+            item = image;
+        }
+
     }
 
 
