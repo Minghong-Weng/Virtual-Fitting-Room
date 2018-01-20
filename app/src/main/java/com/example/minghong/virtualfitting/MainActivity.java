@@ -12,6 +12,7 @@ import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -21,6 +22,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 
@@ -34,6 +37,8 @@ import java.io.IOException;
 import android.graphics.Bitmap;
 
 import android.os.Environment;
+import android.widget.Spinner;
+import android.widget.Toast;
 
 
 public class MainActivity extends AppCompatActivity
@@ -48,6 +53,8 @@ public class MainActivity extends AppCompatActivity
     Bitmap selfie = null;
     Bitmap item = null;
     private boolean setSelfie = false;
+    private String spinnerResult = "";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,6 +89,24 @@ public class MainActivity extends AppCompatActivity
             }
         });
         ivItem = (ImageView) findViewById(R.id.ivItem);
+
+        Spinner spinner=(Spinner)findViewById(R.id.selectCa);
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View arg1,
+                                       int pos, long id) {
+                // TODO Auto-generated method stub
+                spinnerResult = parent.getItemAtPosition(pos).toString();//获取选择项的值
+                Log.i("spinner", spinnerResult);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> arg0) {
+                // TODO Auto-generated method stub
+
+            }
+        });
 
     }
 
@@ -295,9 +320,12 @@ public class MainActivity extends AppCompatActivity
         selfie.compress(Bitmap.CompressFormat.PNG, 100, stream);
         byte[] byteArray = stream.toByteArray();
 
+        Toast.makeText(this,spinnerResult, Toast.LENGTH_SHORT).show();
+
         //pass byte array into intent
         Intent intent = new Intent(this, ResultActivity.class);
-        intent.putExtra("result", byteArray);
+        intent.putExtra("imageResult", byteArray);
+        intent.putExtra("spinnerResult", spinnerResult);
         startActivity(intent);
     }
 
