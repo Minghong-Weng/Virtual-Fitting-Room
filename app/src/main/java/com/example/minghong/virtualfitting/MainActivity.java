@@ -162,6 +162,7 @@ public class MainActivity extends AppCompatActivity
                 boolean result=Utility.checkPermission(MainActivity.this);
 
                 if (items[item].equals("Take Photo")) {
+
                     userChoosenTask ="Take Photo";
                     if(result)
                         cameraIntent();
