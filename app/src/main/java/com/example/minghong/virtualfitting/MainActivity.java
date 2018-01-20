@@ -39,7 +39,11 @@ public class MainActivity extends AppCompatActivity
     private int REQUEST_CAMERA = 0, SELECT_FILE = 1;
     private Button btnSelect;
     private ImageView ivImage;
+    //private Button btnItem;
+    //private ImageView ivItem;
     private String userChoosenTask;
+    Bitmap selfie = null;
+    //Bitmap item = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,6 +78,15 @@ public class MainActivity extends AppCompatActivity
             }
         });
         ivImage = (ImageView) findViewById(R.id.ivImage);
+
+        /*btnItem = (Button) findViewById(R.id.btnSelectItem);
+        btnItem.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                selectItem();
+            }
+        });
+        ivItem = (ImageView) findViewById(R.id.itemImage);*/
 
     }
 
@@ -180,6 +193,30 @@ public class MainActivity extends AppCompatActivity
         builder.show();
     }
 
+   /* private void selectItem() {
+        final CharSequence[] items = {"Choose from Library",
+                "Cancel" };
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+        builder.setTitle("Add Photo!");
+        builder.setItems(items, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int item) {
+                boolean result=Utility.checkPermission(MainActivity.this);
+
+                if (items[item].equals("Choose from Library")) {
+                    userChoosenTask ="Choose from Library";
+                    if(result)
+                        galleryIntent();
+
+                } else if (items[item].equals("Cancel")) {
+                    dialog.dismiss();
+                }
+            }
+        });
+        builder.show();
+    }*/
+
     private void galleryIntent()
     {
         Intent intent = new Intent();
@@ -207,9 +244,9 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void onCaptureImageResult(Intent data) {
-        Bitmap thumbnail = (Bitmap) data.getExtras().get("data");
+        selfie = (Bitmap) data.getExtras().get("data");
         ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-        thumbnail.compress(Bitmap.CompressFormat.JPEG, 90, bytes);
+        selfie.compress(Bitmap.CompressFormat.JPEG, 90, bytes);
 
         File destination = new File(Environment.getExternalStorageDirectory(),
                 System.currentTimeMillis() + ".jpg");
@@ -226,22 +263,22 @@ public class MainActivity extends AppCompatActivity
             e.printStackTrace();
         }
 
-        ivImage.setImageBitmap(thumbnail);
+        ivImage.setImageBitmap(selfie);
     }
 
     @SuppressWarnings("deprecation")
     private void onSelectFromGalleryResult(Intent data) {
 
-        Bitmap bm=null;
+
         if (data != null) {
             try {
-                bm = MediaStore.Images.Media.getBitmap(getApplicationContext().getContentResolver(), data.getData());
+                selfie = MediaStore.Images.Media.getBitmap(getApplicationContext().getContentResolver(), data.getData());
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
 
-        ivImage.setImageBitmap(bm);
+        ivImage.setImageBitmap(selfie);
     }
 
 
