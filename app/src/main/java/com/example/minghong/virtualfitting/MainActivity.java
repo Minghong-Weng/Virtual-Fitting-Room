@@ -4,6 +4,9 @@ import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Canvas;
+import android.graphics.Matrix;
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
@@ -287,6 +290,8 @@ public class MainActivity extends AppCompatActivity
     public void submit(View view){
         //convert bitmap to byte array
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        item = resizeImage(item, selfie.getWidth() / 2, selfie.getHeight() / 2);
+        selfie = combineImages(selfie, item);
         selfie.compress(Bitmap.CompressFormat.PNG, 100, stream);
         byte[] byteArray = stream.toByteArray();
 
@@ -294,6 +299,45 @@ public class MainActivity extends AppCompatActivity
         Intent intent = new Intent(this, ResultActivity.class);
         intent.putExtra("result", byteArray);
         startActivity(intent);
+    }
+
+
+    public static Bitmap resizeImage(Bitmap bitmap, int w, int h)
+    {
+        Bitmap BitmapOrg = bitmap;
+        int width = BitmapOrg.getWidth();
+        int height = BitmapOrg.getHeight();
+        int newWidth = w;
+        int newHeight = h;
+
+        float scaleWidth = ((float)newWidth) / width;
+        float scaleHeight = ((float)newHeight) / height;
+
+        Matrix matrix = new Matrix();
+        matrix.postScale(scaleWidth, scaleHeight);
+        // if you want to rotate the Bitmap
+        // matrix.postRotate(45);
+        Bitmap resizedBitmap = Bitmap.createBitmap(BitmapOrg, 0, 0, width, height, matrix, true);
+        return resizedBitmap;
+    }
+
+    private Bitmap combineImages(Bitmap selfie, Bitmap item){
+        if (!selfie.isMutable())
+        {
+            // 设置图片为背景为透明
+            selfie = selfie.copy(Bitmap.Config.ARGB_8888, true);
+        }
+
+        Canvas canvas = new Canvas(selfie);
+        Paint paint = new Paint();
+        canvas.drawBitmap(item, 100, 0, paint);// 叠加新图b2 (120-85)/2= 17.5
+        //canvas.save(Canvas.ALL_SAVE_FLAG);
+        //canvas.restore();
+
+        return selfie;
+
+
+
     }
 
 
