@@ -168,6 +168,8 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
+    //the following code regarding taking photo from camera and gallery is copied and midified from
+    // https://github.com/theappguruz/Android-Take-Photo-From-Camera-and-Gallery-Code-Sample
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         switch (requestCode) {
@@ -314,6 +316,10 @@ public class MainActivity extends AppCompatActivity
 
     }
 
+    /**
+     * upon pressing submit button, the program will combine selfie and item and display the result in resultactivity
+     * @param view
+     */
     public void submit(View view){
         //convert bitmap to byte array
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
@@ -332,6 +338,7 @@ public class MainActivity extends AppCompatActivity
         startActivity(intent);
     }
 
+    //copied from https://stackoverflow.com/questions/3528735/failed-binder-transaction-when-putting-an-bitmap-dynamically-in-a-widget
     private static Bitmap scaleDownBitmap(Bitmap photo, int newHeight, Context context) {
 
         final float densityMultiplier = context.getResources().getDisplayMetrics().density;
@@ -344,7 +351,9 @@ public class MainActivity extends AppCompatActivity
         return photo;
     }
 
-    public static Bitmap resizeImage(Bitmap bitmap, int w, int h)
+
+    //copied from http://www.zhimengzhe.com/Androidkaifa/210791.html
+    private static Bitmap resizeImage(Bitmap bitmap, int w, int h)
     {
         Bitmap BitmapOrg = bitmap;
         int width = BitmapOrg.getWidth();
@@ -363,6 +372,8 @@ public class MainActivity extends AppCompatActivity
         return resizedBitmap;
     }
 
+    //modified from http://www.zhimengzhe.com/Androidkaifa/210791.html
+    //put item on top of selfie
     private Bitmap combineImages(Bitmap selfie, Bitmap item){
         if (!selfie.isMutable())
         {
