@@ -1,6 +1,7 @@
 package com.example.minghong.virtualfitting;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -295,6 +296,7 @@ public class MainActivity extends AppCompatActivity
         if (data != null) {
             try {
                 image = MediaStore.Images.Media.getBitmap(getApplicationContext().getContentResolver(), data.getData());
+                image = scaleDownBitmap(image, 100, this);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -316,11 +318,12 @@ public class MainActivity extends AppCompatActivity
         //convert bitmap to byte array
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         item = resizeImage(item, selfie.getWidth() / 2, selfie.getHeight() / 2);
+
         selfie = combineImages(selfie, item);
         selfie.compress(Bitmap.CompressFormat.PNG, 100, stream);
         byte[] byteArray = stream.toByteArray();
 
-        Toast.makeText(this,spinnerResult, Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this,spinnerResult, Toast.LENGTH_SHORT).show();
 
         //pass byte array into intent
         Intent intent = new Intent(this, ResultActivity.class);
@@ -329,6 +332,17 @@ public class MainActivity extends AppCompatActivity
         startActivity(intent);
     }
 
+    private static Bitmap scaleDownBitmap(Bitmap photo, int newHeight, Context context) {
+
+        final float densityMultiplier = context.getResources().getDisplayMetrics().density;
+
+        int h= (int) (newHeight*densityMultiplier);
+        int w= (int) (h * photo.getWidth()/((double) photo.getHeight()));
+
+        photo=Bitmap.createScaledBitmap(photo, w, h, true);
+
+        return photo;
+    }
 
     public static Bitmap resizeImage(Bitmap bitmap, int w, int h)
     {
@@ -356,13 +370,14 @@ public class MainActivity extends AppCompatActivity
             selfie = selfie.copy(Bitmap.Config.ARGB_8888, true);
         }
 
-        Canvas canvas = new Canvas(selfie);
+        Bitmap selfieCopy = selfie.copy(selfie.getConfig(), true);
+        Canvas canvas = new Canvas(selfieCopy);
         Paint paint = new Paint();
         canvas.drawBitmap(item, 100, 0, paint);// 叠加新图b2 (120-85)/2= 17.5
         //canvas.save(Canvas.ALL_SAVE_FLAG);
         //canvas.restore();
 
-        return selfie;
+        return selfieCopy;
 
 
 

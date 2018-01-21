@@ -12,6 +12,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.Toast;
+
+import static android.app.PendingIntent.getActivity;
 
 public class ResultActivity extends AppCompatActivity {
 
@@ -46,12 +49,13 @@ public class ResultActivity extends AppCompatActivity {
                 "result",
                 "result of combination"
         );
+        Toast.makeText(this, "Saved to Gallery!", Toast.LENGTH_LONG).show();
 
     }
 
     public static void verifyStoragePermissions(Activity activity) {
                  // Check if we have write permission
-                 int permission = ActivityCompat.checkSelfPermission(activity,
+                int permission = ActivityCompat.checkSelfPermission(activity,
                                  Manifest.permission.WRITE_EXTERNAL_STORAGE);
 
                 if (permission != PackageManager.PERMISSION_GRANTED) {
